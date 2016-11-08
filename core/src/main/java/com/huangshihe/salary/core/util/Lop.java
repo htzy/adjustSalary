@@ -6,7 +6,6 @@ package com.huangshihe.salary.core.util;
 public enum Lop {
     AND, OR, NOT;
 
-    //    ,GE,GT,LE,LT,EQ,IN,LIN,AIN,RIN
     public static Lop getLop(String lopStr) {
         switch (lopStr) {
             case "|":

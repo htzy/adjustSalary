@@ -3,7 +3,6 @@ package com.huangshihe.salary.core.util;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -16,8 +15,9 @@ public class DataHelper {
         return strings.stream().map(s -> (T) s).collect(Collectors.toList());
     }
 
-    public static boolean isStrArray(String string){
-        String pattern="\\[.*\\]";
+    public static boolean isStrArray(String string) {
+        // TODO 判断该字符串内容为List格式的内容如：[1,2,3]
+        String pattern = "\\[.*\\]";
         return string.matches(pattern);
     }
 

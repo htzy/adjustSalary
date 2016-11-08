@@ -12,6 +12,7 @@ public class Staff {
     private Date hireDay;
     private boolean sex;
     private int salary;
+    private double rate;
 
     public Staff() {
     }
@@ -71,4 +72,11 @@ public class Staff {
         this.salary = salary;
     }
 
+    public double getRate() {
+        return rate;
+    }
+
+    public void setRate(double rate) {
+        this.rate = rate;
+    }
 }

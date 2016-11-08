@@ -1,7 +1,7 @@
 package com.huangshihe.salary.core.bean;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by dell on 2016/11/6.
@@ -17,15 +17,17 @@ public class Rule {
      */
     public Rule(String stand) {
         String[] sts = stand.split("}=");
-      /*  Double r = Double.valueOf(sts[1]);
-      TODO valueOf 和parseDouble的区别：valueOf为对象，而parseDouble返回值
-       高性能的程序使用double值，而框架希望使用Double对象，因为对象可以暂时不赋值，为null*/
         rate = Double.parseDouble(sts[1].trim());
-//        sts[0].substring(1, sts[0].length())
-        // 首先把第一个{去掉，再把所有的分隔符用;+分隔符隔开，但是要注意第一个元素可能为""空字符串，再用;分号分割
         buildSubRule(sts[0]);
+        subRules = new ArrayList<SubRule>();
     }
 
+    /**
+     * 解析业务规则的前半部分得到子规则<br>
+     * 首先把第一个{去掉，再把所有的分隔符用;+分隔符隔开，但是要注意第一个元素可能为""空字符串，再用;分号分割
+     *
+     * @param st 业务规则前半部分
+     */
     private void buildSubRule(String st) {
         String[] sStr = st.replace("{", "").trim().replace("&", ";&").replace("|", ";|").replace("!", ";!").split(";");
         for (String s : sStr) {
@@ -36,19 +38,28 @@ public class Rule {
         }
     }
 
-    // 因为java泛型不彻底，所以可以直接用Object
-//    public double getRate<T>(T t) {
-//
-//    }
+    /**
+     * 获得该员工的涨幅<br>
+     * 如果所有业务规则对该员工不生效，则返回涨幅0，否则返回正确的涨幅
+     *
+     * @param staff 员工
+     * @return 工资涨幅
+     */
     public double getRate(Object staff) {
         return getValues(staff) ? rate : 0;
     }
 
+    /**
+     * 遍历所有的业务规则，验证是否对该员工生效，如果都不生效则返回false，否则返回true
+     *
+     * @param staff 员工
+     * @return 是否生效
+     */
     private boolean getValues(Object staff) {
         boolean result = true;
         for (SubRule subRule : subRules) {
             result &= subRule.getValue(staff);
         }
-        return false;
+        return result;
     }
 }

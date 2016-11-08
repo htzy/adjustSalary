@@ -4,10 +4,9 @@ package com.huangshihe.salary.core.util;
  * Created by dell on 2016/11/6.
  */
 public enum Op {
-    EQ, GE, LE, GT, LT;
+    EQ, GE, LE, GT, LT, IN, LIN, AIN, RIN;
 
-    //    GE:>=,LE:<=,GT:>,LT:<
-//    >= <= > < & | ! in ( ) [ ]
+    //    GE:>=,LE:<=,GT:>,LT:<,IN:(),LIN:[),AIN:[],RIN:(]
     public static Op getOp(String opStr) {
         switch (opStr) {
             case "=":
@@ -20,6 +19,14 @@ public enum Op {
                 return GT;
             case "<":
                 return LT;
+            case "()":
+                return IN;
+            case "[)":
+                return LIN;
+            case "[]":
+                return AIN;
+            case "(]":
+                return RIN;
             default:
                 return EQ;
         }
@@ -27,12 +34,12 @@ public enum Op {
 
     public static boolean getValue(Object vProve, Op op, Object rValue, boolean isNumber) {
         // 如果提供的值是数组
-        if (vProve.getClass().isArray()) {
+        if (DataHelper.isContentArray(vProve)) {
             return getArrayValue(vProve, op, (Object[]) rValue, isNumber);
-        } else if(isNumber){
+        } else if (isNumber) {
             // 如果是数字，即就是Double
-            return getSingleValue((Double)vProve, op, (Double)rValue);
-        }else{
+            return getSingleValue((Double) vProve, op, (Double) rValue);
+        } else {
             // 如果是字符
             return vProve.equals(rValue);
         }
@@ -42,6 +49,12 @@ public enum Op {
         switch (op) {
             case GE:
                 return vProve >= rValue;
+            case LE:
+                return vProve <= rValue;
+            case GT:
+                return vProve > rValue;
+            case LT:
+                return vProve < rValue;
             default:
                 return vProve.equals(rValue);
         }
@@ -50,9 +63,7 @@ public enum Op {
 
     public static boolean getArrayValue(Object vProve, Op op, Object[] rValue, boolean isNumber) {
         boolean result = false;
+
         return result;
     }
 }
-
-// TODO 学习工作流引擎
-
